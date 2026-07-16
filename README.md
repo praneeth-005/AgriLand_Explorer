@@ -2,12 +2,12 @@
 
 ![AgriLand Banner](https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1200&auto=format&fit=crop)
 
-**Team:** Harvest Hackers  
+**Developer:** Praneeth (Harvest Hackers)  
 **Platform:** [Live Demo on Vercel](https://agri-tech-three-alpha.vercel.app/)
 
 ## 📖 Overview
 
-Farming is becoming increasingly data-heavy, but making sense of that data is difficult. Built by the **Harvest Hackers**, **AgriLand AI** bridges the gap between complex geospatial data and everyday farming decisions. Our platform is an AI-native precision agriculture application that combines interactive satellite mapping with intelligent decision-making to help farmers optimize yields and save resources.
+Farming is becoming increasingly data-heavy, but making sense of that data is difficult. Built entirely by a solo developer (**Praneeth** under the team name **Harvest Hackers**), **AgriLand AI** bridges the gap between complex geospatial data and everyday farming decisions. My platform is an AI-native precision agriculture application that combines interactive satellite mapping with intelligent decision-making to help farmers optimize yields and save resources.
 
 While traditional farming relies on guesswork, AgriLand AI acts as a 24/7 virtual agronomist. By integrating advanced machine learning concepts and predictive intelligence, it turns raw field data into automated, proactive farming decisions.
 
@@ -72,10 +72,10 @@ To run this project locally, follow these steps:
 
 ## 🧠 Hackathon AI Integrations
 
-During this hackathon, we focused heavily on modernizing the UI/UX to support AI workflows:
+During this hackathon, I focused heavily on modernizing the UI/UX to support AI workflows:
 - **Intelligent Boundaries:** Using polygon drawing paired with geospatial calculations.
 - **Data Validation:** Strict client-side validation to ensure clean data pipelines for machine learning models.
 - **Future Roadmap:** Integrating direct API calls to OpenAI and Google Cloud Vision for real-time crop disease detection from uploaded drone images.
 
 ---
-*Built with ❤️ by Harvest Hackers*
+*Built with ❤️ by a solo developer, Praneeth (Harvest Hackers)*
