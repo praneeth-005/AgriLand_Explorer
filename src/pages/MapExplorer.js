@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Polygon, Marker, useMapEvents, useMap, ZoomCon
 import * as turf from '@turf/turf';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import TrackpadScrollPan from '../components/TrackpadScrollPan';
 
 // Fix for default marker icons in React Leaflet
 const customIcon = new L.Icon({
@@ -233,6 +234,7 @@ export default function MapExplorer() {
           style={{ width: '100%', height: '100%' }}
           zoomControl={false}
         >
+          <TrackpadScrollPan />
           {/* Esri World Imagery (High-Res Satellite) */}
           <TileLayer
             url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { MapContainer, TileLayer, Polygon, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import TrackpadScrollPan from '../components/TrackpadScrollPan';
 
 // Fix for default Leaflet markers missing icons in React
 delete L.Icon.Default.prototype._getIconUrl;
@@ -181,8 +182,10 @@ export default function NavigationRoute() {
           center={targetCenter} 
           zoom={15} 
           style={{ height: '100%', width: '100%' }}
+          className="w-full h-full"
           zoomControl={true}
         >
+          <TrackpadScrollPan />
           <TileLayer
             attribution='&copy; <a href="https://maps.google.com">Google Maps</a>'
             url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"

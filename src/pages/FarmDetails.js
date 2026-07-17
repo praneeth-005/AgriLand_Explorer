@@ -5,6 +5,7 @@ import { removeLand } from '../store/landsSlice.js';
 import { MapContainer, TileLayer, Polygon, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import TrackpadScrollPan from '../components/TrackpadScrollPan';
 
 // Fix for default Leaflet markers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -73,6 +74,16 @@ export default function FarmDetails() {
     return { text: "Storm", icon: "thunderstorm", color: "text-purple-600" };
   };
 
+  const getTagClasses = (color) => {
+    switch (color) {
+      case 'yellow': return 'bg-yellow-50 text-yellow-700 border-yellow-100';
+      case 'green': return 'bg-green-50 text-green-700 border-green-100';
+      case 'blue': return 'bg-blue-50 text-blue-700 border-blue-100';
+      case 'red': return 'bg-red-50 text-red-700 border-red-100';
+      default: return 'bg-gray-50 text-gray-700 border-gray-100';
+    }
+  };
+
   const weatherDetails = weather ? getWeatherDescription(weather.weather_code) : null;
 
   return (
@@ -128,6 +139,7 @@ export default function FarmDetails() {
                scrollWheelZoom={false}
                doubleClickZoom={false}
              >
+               <TrackpadScrollPan />
                <TileLayer
                  attribution='&copy; <a href="https://maps.google.com">Google Maps</a>'
                  url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
@@ -243,7 +255,7 @@ export default function FarmDetails() {
             <div className="space-y-6">
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">Total Area</p>
-                <p className="text-2xl font-bold text-green-700">{land.area} {land.area === '2.3' ? 'Acres' : 'Hectares'}</p>
+                <p className="text-2xl font-bold text-green-700">{land.area} Acres</p>
               </div>
               
               <div>
@@ -258,7 +270,7 @@ export default function FarmDetails() {
                 <p className="text-sm font-semibold text-gray-500 mb-2">Property Tags</p>
                 <div className="flex flex-wrap gap-2">
                   {land.tags.map((tag, idx) => (
-                    <span key={idx} className={`bg-${tag.color}-50 text-${tag.color}-700 text-sm px-3 py-1.5 rounded border border-${tag.color}-100 font-medium`}>
+                    <span key={idx} className={`${getTagClasses(tag.color)} text-sm px-3 py-1.5 rounded border font-medium`}>
                       {tag.label}
                     </span>
                   ))}
