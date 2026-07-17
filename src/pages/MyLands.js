@@ -23,6 +23,16 @@ export default function MyLands() {
   // Yield projection logic based on total area
   const yieldProjection = totalHoldings > 10 ? 'High' : (totalHoldings > 3 ? 'Optimal' : 'Moderate');
 
+  const getTagClasses = (color) => {
+    switch (color) {
+      case 'yellow': return 'bg-yellow-50 text-yellow-700 border-yellow-100';
+      case 'green': return 'bg-green-50 text-green-700 border-green-100';
+      case 'blue': return 'bg-blue-50 text-blue-700 border-blue-100';
+      case 'red': return 'bg-red-50 text-red-700 border-red-100';
+      default: return 'bg-gray-50 text-gray-700 border-gray-100';
+    }
+  };
+
   return (
     <div className="h-full w-full bg-[#f3f4f6] overflow-y-auto px-4 lg:px-10 pt-6 lg:pt-10 pb-24 lg:pb-20">
       
@@ -106,12 +116,12 @@ export default function MyLands() {
             <div className="p-5 flex-grow flex flex-col">
               <div className="flex justify-between items-start mb-1">
                 <h3 className="text-xl font-bold text-gray-900 truncate pr-2">{land.name}</h3>
-                <span className="text-green-700 font-bold whitespace-nowrap">{land.area} {land.area === '2.3' ? 'Acres' : 'Ha'}</span>
+                <span className="text-green-700 font-bold whitespace-nowrap">{land.area} Acres</span>
               </div>
               <p className="text-sm text-gray-500 mb-4">Survey #{land.surveyNumber}</p>
               <div className="flex flex-wrap gap-2 mt-auto">
                 {land.tags.map((tag, idx) => (
-                  <span key={idx} className={`bg-${tag.color}-50 text-${tag.color}-700 text-xs px-2 py-1 rounded border border-${tag.color}-100 font-medium`}>
+                  <span key={idx} className={`${getTagClasses(tag.color)} text-xs px-2 py-1 rounded border font-medium`}>
                     {tag.label}
                   </span>
                 ))}
