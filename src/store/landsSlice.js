@@ -13,8 +13,10 @@ const formatLand = (dbLand) => ({
   image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop'
 });
 
-export const fetchLands = createAsyncThunk('lands/fetchLands', async () => {
-  const { data, error } = await supabase.from('lands').select('*');
+export const fetchLands = createAsyncThunk('lands/fetchLands', async (_, { getState }) => {
+  const user = getState().auth.user;
+  if (!user) return [];
+  const { data, error } = await supabase.from('lands').select('*').eq('user_id', user.id);
   if (error) throw error;
   return data.map(formatLand);
 });
