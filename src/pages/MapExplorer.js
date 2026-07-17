@@ -516,6 +516,10 @@ export default function MapExplorer() {
         {/* Location Button */}
         <button 
           onClick={() => {
+            if (userLocation) {
+              // Immediately pan to the last known location for instant UI feedback
+              setSearchLocation([...userLocation]);
+            }
             if ("geolocation" in navigator) {
               navigator.geolocation.getCurrentPosition((pos) => {
                 const loc = [pos.coords.latitude, pos.coords.longitude];
@@ -523,14 +527,16 @@ export default function MapExplorer() {
                 setUserLocation(loc);
               }, (err) => {
                 console.warn("Location warning:", err);
-                alert("Could not get your exact location. Please ensure location services are enabled or try again.");
+                if (!userLocation) {
+                  alert("Could not get your exact location. Please ensure location services are enabled or try again.");
+                }
               }, {
                 enableHighAccuracy: true,
                 timeout: 10000,
                 maximumAge: 60000 // Allow up to 60 seconds cached location for instant response
               });
             } else {
-              alert("Geolocation is not supported by your browser.");
+              if (!userLocation) alert("Geolocation is not supported by your browser.");
             }
           }}
           className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl shadow-md flex items-center justify-center text-gray-700 hover:bg-gray-100 border border-gray-200"
