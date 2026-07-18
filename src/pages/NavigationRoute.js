@@ -166,7 +166,8 @@ export default function NavigationRoute() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             (pos) => setUserLocation([pos.coords.latitude, pos.coords.longitude]),
-            (err) => console.log("Initial GPS request failed", err)
+            (err) => console.log("Initial GPS request failed", err),
+            { enableHighAccuracy: true, maximumAge: 60000, timeout: 5000 }
         );
     }
   };
