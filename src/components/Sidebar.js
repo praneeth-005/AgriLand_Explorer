@@ -40,7 +40,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Toast Notification Overlay */}
-      <div className={`fixed bottom-24 lg:bottom-10 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-300 ${toast ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95 pointer-events-none'}`}>
+      <div className={`fixed top-6 lg:top-10 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-300 ${toast ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-8 scale-95 pointer-events-none'}`}>
            <span className="material-symbols-outlined text-yellow-400 text-[20px]">construction</span>
            <span className="font-bold text-sm tracking-wide">{toast}</span>
       </div>
