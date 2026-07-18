@@ -17,7 +17,7 @@ const DashboardLayout = () => {
   const { user, loading } = useSelector((state) => state.auth);
 
   if (loading) {
-    return <div className="w-screen h-screen flex items-center justify-center bg-[#f3f4f6]">Loading...</div>;
+    return <div className="w-full h-screen flex items-center justify-center bg-[#f3f4f6]">Loading...</div>;
   }
 
   if (!user) {
@@ -25,7 +25,7 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row w-screen h-[100dvh] overflow-hidden bg-[#f3f4f6]">
+    <div className="flex flex-col-reverse lg:flex-row w-full h-[100dvh] overflow-hidden bg-[#f3f4f6]">
       <Sidebar />
       <main className="flex-1 relative overflow-hidden min-h-0">
         <Outlet />
@@ -38,7 +38,7 @@ const AuthLayout = () => {
   const { user, loading } = useSelector((state) => state.auth);
 
   if (loading) {
-    return <div className="w-screen h-screen flex items-center justify-center bg-white">Loading...</div>;
+    return <div className="w-full h-screen flex items-center justify-center bg-white">Loading...</div>;
   }
 
   if (user) {
