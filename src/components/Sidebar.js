@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // Force cache reload
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,6 +8,12 @@ import { clearAuth } from '../store/authSlice';
 export default function Sidebar() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleLogout = async () => {
     if (window.confirm("Are you sure you want to log out?")) {
@@ -33,6 +39,12 @@ export default function Sidebar() {
 
   return (
     <>
+      {/* Toast Notification Overlay */}
+      <div className={`fixed bottom-24 lg:bottom-10 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-300 ${toast ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95 pointer-events-none'}`}>
+           <span className="material-symbols-outlined text-yellow-400 text-[20px]">construction</span>
+           <span className="font-bold text-sm tracking-wide">{toast}</span>
+      </div>
+
       {/* Mobile Bottom Navigation (Hidden on lg+ screens) */}
       <aside className="lg:hidden w-full h-[72px] bg-white border-t border-gray-200 flex justify-around items-center z-50 flex-shrink-0 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <NavLink to="/lands" className={({ isActive }) => getMobileNavClass(isActive)}>
@@ -65,7 +77,7 @@ export default function Sidebar() {
 
           {/* Navigation Links */}
           <nav className="flex flex-col gap-2 mt-4">
-            <div onClick={() => alert('Profile settings coming soon!')} className={getNavClass(false)}>
+            <div onClick={() => showToast('User Profiles coming in v3.0!')} className={getNavClass(false)}>
               <span className="material-symbols-outlined">person</span>
               <span className="text-lg">Profile</span>
             </div>
@@ -75,7 +87,7 @@ export default function Sidebar() {
               <span className="text-lg">My Lands</span>
             </NavLink>
 
-            <div onClick={() => alert('Saved Plots coming soon! Use My Lands to view properties.')} className={getNavClass(false)}>
+            <div onClick={() => showToast('Saved Plots coming soon. Use My Lands for now.')} className={getNavClass(false)}>
               <span className="material-symbols-outlined">bookmark</span>
               <span className="text-lg">Saved Plots</span>
             </div>
@@ -90,7 +102,7 @@ export default function Sidebar() {
               <span className="text-lg">Routes</span>
             </NavLink>
 
-            <div onClick={() => alert('Analytics dashboard coming soon!')} className={getNavClass(false)}>
+            <div onClick={() => showToast('Advanced Analytics coming in v3.0!')} className={getNavClass(false)}>
               <span className="material-symbols-outlined">insert_chart</span>
               <span className="text-lg">Analytics</span>
             </div>
@@ -99,7 +111,7 @@ export default function Sidebar() {
 
         {/* Bottom Section */}
         <div className="flex flex-col gap-8 pb-8 px-8">
-          <div className="flex items-center gap-4 text-gray-500 hover:text-gray-900 cursor-pointer transition-colors">
+          <div onClick={() => showToast('Help Center is currently under construction.')} className="flex items-center gap-4 text-gray-500 hover:text-gray-900 cursor-pointer transition-colors">
             <span className="material-symbols-outlined">help</span>
             <span className="text-lg font-medium">Help</span>
           </div>
