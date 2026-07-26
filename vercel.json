@@ -1,5 +1,5 @@
 {
-  "buildCommand": "parcel build index.html",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
     {
