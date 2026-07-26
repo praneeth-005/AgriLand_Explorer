@@ -54,10 +54,11 @@ const SearchFlyTo = ({ location }) => {
   return null;
 };
 
-export default function MapExplorer() {
+export default function MapExplorer({ onOpenLimitModal }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const { tier, maxFieldBoundaries } = useSelector(state => state.tier);
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);

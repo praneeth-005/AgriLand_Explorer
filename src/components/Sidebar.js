@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-// Force cache reload
 import { useSelector, useDispatch } from 'react-redux';
 import { supabase } from '../supabaseClient.js';
 import { clearAuth } from '../store/authSlice';
 
-export default function Sidebar() {
+export default function Sidebar({ onOpenTierModal, onOpenSoilCalc }) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const [toast, setToast] = useState(null);
@@ -22,122 +21,103 @@ export default function Sidebar() {
     }
   };
 
-  const getNavClass = (isActive) => {
-    return isActive
-      ? "flex items-center gap-4 px-6 py-4 mx-4 bg-[#e0e7ff] text-[#1e1b4b] font-bold rounded-xl"
-      : "flex items-center gap-4 px-6 py-4 mx-4 text-on-surface-variant hover:bg-surface-variant/50 hover:text-primary transition-colors rounded-xl font-medium cursor-pointer";
-  };
-
-  const getMobileNavClass = (isActive) => {
-    return isActive
-      ? "flex flex-col items-center justify-center p-2 text-[#008e4d] font-bold"
-      : "flex flex-col items-center justify-center p-2 text-gray-400 hover:text-gray-600 font-medium cursor-pointer transition-colors";
-  };
-
-  const username = user?.email ? user.email.split('@')[0] : 'User';
-  const displayUsername = username.charAt(0).toUpperCase() + username.slice(1);
-
   return (
     <>
       {/* Toast Notification Overlay */}
       <div className={`fixed top-6 lg:top-10 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-300 ${toast ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-8 scale-95 pointer-events-none'}`}>
-           <span className="material-symbols-outlined text-yellow-400 text-[20px]">construction</span>
-           <span className="font-bold text-sm tracking-wide">{toast}</span>
+        <span className="material-symbols-outlined text-yellow-400 text-[20px]">construction</span>
+        <span className="font-bold text-sm tracking-wide">{toast}</span>
       </div>
 
-      {/* Mobile Bottom Navigation (Hidden on lg+ screens) */}
-      <aside className="lg:hidden w-full h-[72px] bg-white border-t border-gray-200 flex justify-around items-center z-50 flex-shrink-0 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        <NavLink to="/lands" className={({ isActive }) => getMobileNavClass(isActive)}>
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '28px' }}>grid_view</span>
+      {/* Mobile Navigation Bar */}
+      <aside className="lg:hidden w-full h-[72px] bg-white border-t border-gray-200 flex justify-around items-center z-50 flex-shrink-0 pb-safe shadow-sm">
+        <NavLink to="/lands" className={({ isActive }) => isActive ? "flex flex-col items-center p-2 text-[#006c49] font-bold" : "flex flex-col items-center p-2 text-gray-500 font-medium"}>
+          <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>landscape</span>
           <span className="text-[10px] mt-1">Lands</span>
         </NavLink>
-        <NavLink to="/explorer" className={({ isActive }) => getMobileNavClass(isActive)}>
-          <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>map</span>
+        <NavLink to="/explorer" className={({ isActive }) => isActive ? "flex flex-col items-center p-2 text-[#006c49] font-bold" : "flex flex-col items-center p-2 text-gray-500 font-medium"}>
+          <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>explore</span>
           <span className="text-[10px] mt-1">Explore</span>
         </NavLink>
-        <NavLink to="/route" className={({ isActive }) => getMobileNavClass(isActive)}>
-          <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>navigation</span>
-          <span className="text-[10px] mt-1">Routes</span>
-        </NavLink>
-        <div onClick={handleLogout} className={getMobileNavClass(false)}>
-          <span className="material-symbols-outlined text-red-500" style={{ fontSize: '28px' }}>logout</span>
-          <span className="text-[10px] mt-1 text-red-500">Exit</span>
+        <div onClick={onOpenSoilCalc} className="flex flex-col items-center p-2 text-gray-500 font-medium cursor-pointer">
+          <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>water_drop</span>
+          <span className="text-[10px] mt-1">Moisture</span>
+        </div>
+        <div onClick={onOpenTierModal} className="flex flex-col items-center p-2 text-gray-500 font-medium cursor-pointer">
+          <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>workspace_premium</span>
+          <span className="text-[10px] mt-1">Quota</span>
         </div>
       </aside>
 
-      {/* Desktop Sidebar (Hidden on mobile screens) */}
-      <aside className="hidden lg:flex w-[280px] h-screen bg-[#f8fafc] border-r border-outline-variant/30 flex-col justify-between flex-shrink-0 z-50">
-        
-        {/* Top Section */}
-        <div className="flex flex-col">
-          {/* Logo */}
-          <div className="px-8 py-10">
-            <h1 className="text-3xl font-bold text-[#006e2f] tracking-tight">AgriLand</h1>
+      {/* Desktop Side Navigation Bar (Matching Stitch Screen 861e6d8a442745978d61291aeb220071) */}
+      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-64 border-r border-gray-200 bg-white z-40 shadow-sm">
+        <div className="flex flex-col h-full py-6">
+          
+          {/* Logo Header */}
+          <div className="px-6 mb-10">
+            <h1 className="text-2xl font-bold text-[#006c49] tracking-tight">AgriAsset</h1>
+            <p className="text-xs text-gray-500 font-medium opacity-70 mt-0.5">Precision Management</p>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="flex flex-col gap-2 mt-4">
-            <div onClick={() => showToast('User Profiles coming in v3.0!')} className={getNavClass(false)}>
-              <span className="material-symbols-outlined">person</span>
-              <span className="text-lg">Profile</span>
-            </div>
-            
-            <NavLink to="/lands" className={({ isActive }) => getNavClass(isActive)}>
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>grid_view</span>
-              <span className="text-lg">My Lands</span>
+          {/* Navigation Items */}
+          <nav className="flex-1 px-2 space-y-1">
+            <NavLink 
+              to="/lands" 
+              className={({ isActive }) => 
+                isActive 
+                  ? "flex items-center gap-3 px-4 py-3 bg-[#adedd3]/50 text-[#00422b] border-l-4 border-[#006c49] font-semibold transition-all duration-200" 
+                  : "flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors font-medium"
+              }
+            >
+              <span className="material-symbols-outlined">landscape</span>
+              <span className="text-sm">My Lands</span>
             </NavLink>
 
-            <div onClick={() => showToast('Saved Plots coming soon. Use My Lands for now.')} className={getNavClass(false)}>
+            <NavLink 
+              to="/explorer" 
+              className={({ isActive }) => 
+                isActive 
+                  ? "flex items-center gap-3 px-4 py-3 bg-[#adedd3]/50 text-[#00422b] border-l-4 border-[#006c49] font-semibold transition-all duration-200" 
+                  : "flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors font-medium"
+              }
+            >
+              <span className="material-symbols-outlined">explore</span>
+              <span className="text-sm">Explorer</span>
+            </NavLink>
+
+            <div onClick={() => showToast('Analytics active')} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors font-medium cursor-pointer">
+              <span className="material-symbols-outlined">monitoring</span>
+              <span className="text-sm">Analytics</span>
+            </div>
+
+            <div onClick={() => showToast('Saved plots active')} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors font-medium cursor-pointer">
               <span className="material-symbols-outlined">bookmark</span>
-              <span className="text-lg">Saved Plots</span>
+              <span className="text-sm">Saved Plots</span>
             </div>
 
-            <NavLink to="/explorer" className={({ isActive }) => getNavClass(isActive)}>
-              <span className="material-symbols-outlined">map</span>
-              <span className="text-lg">Explorer</span>
-            </NavLink>
-
-            <NavLink to="/route" className={({ isActive }) => getNavClass(isActive)}>
-              <span className="material-symbols-outlined">navigation</span>
-              <span className="text-lg">Routes</span>
-            </NavLink>
-
-            <div onClick={() => showToast('Advanced Analytics coming in v3.0!')} className={getNavClass(false)}>
-              <span className="material-symbols-outlined">insert_chart</span>
-              <span className="text-lg">Analytics</span>
+            <div onClick={onOpenTierModal} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors font-medium cursor-pointer">
+              <span className="material-symbols-outlined">person</span>
+              <span className="text-sm">Profile</span>
             </div>
           </nav>
-        </div>
 
-        {/* Bottom Section */}
-        <div className="flex flex-col gap-8 pb-8 px-8">
-          <div onClick={() => showToast('Help Center is currently under construction.')} className="flex items-center gap-4 text-gray-500 hover:text-gray-900 cursor-pointer transition-colors">
-            <span className="material-symbols-outlined">help</span>
-            <span className="text-lg font-medium">Help</span>
-          </div>
+          {/* Bottom Actions */}
+          <div className="px-4 mt-auto space-y-2">
+            <NavLink 
+              to="/explorer" 
+              className="w-full py-3 bg-[#006c49] hover:bg-[#005236] text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
+            >
+              <span className="material-symbols-outlined text-[20px]">add</span>
+              Add New Plot
+            </NavLink>
 
-          <div className="h-[1px] w-full bg-gray-200"></div>
-
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[#006e2f] flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-sm">
-                {displayUsername.charAt(0)}
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-gray-900 text-base truncate max-w-[120px]">{displayUsername}</span>
-                <span className="text-xs text-gray-500 font-medium">Free Account</span>
-              </div>
+            <div onClick={() => showToast('Help Center available')} className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors">
+              <span className="material-symbols-outlined">help</span>
+              <span className="text-sm font-medium">Help</span>
             </div>
-            <button onClick={handleLogout} title="Log Out" className="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50">
-              <span className="material-symbols-outlined text-[20px]">logout</span>
-            </button>
           </div>
 
-          <div className="text-center text-xs text-gray-400 mt-2">
-            v2.4.0
-          </div>
         </div>
-        
       </aside>
     </>
   );

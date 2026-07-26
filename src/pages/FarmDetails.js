@@ -25,7 +25,7 @@ const FitPolygon = ({ positions }) => {
   return null;
 };
 
-export default function FarmDetails() {
+export default function FarmDetails({ onOpenSoilCalc }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,6 +33,7 @@ export default function FarmDetails() {
   const land = lands.find(l => l.id === id) || lands[0];
 
   const [weather, setWeather] = useState(null);
+  const [dailyForecast, setDailyForecast] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -55,9 +56,14 @@ export default function FarmDetails() {
       const centerLat = land.polygonPoints[0][0];
       const centerLon = land.polygonPoints[0][1];
 
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${centerLat}&longitude=${centerLon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,soil_temperature_6cm,soil_moisture_3_to_9cm`)
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${centerLat}&longitude=${centerLon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,soil_temperature_6cm,soil_moisture_3_to_9cm&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum&timezone=auto`)
         .then(res => res.json())
-        .then(data => setWeather(data.current))
+        .then(data => {
+          setWeather(data.current);
+          if (data.daily) {
+            setDailyForecast(data.daily);
+          }
+        })
         .catch(err => console.error("Weather fetch error", err));
     }
   }, [land]);
@@ -157,40 +163,83 @@ export default function FarmDetails() {
              </MapContainer>
           </div>
 
-          {/* Live Weather Widget */}
-          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-bold text-gray-500 tracking-wider uppercase mb-1">Live Agronomic Weather</h3>
-              <p className="text-gray-900 font-medium">Exact Plot Coordinates</p>
+          {/* Standard Weather Forecast (Freemium Tier) Widget */}
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col gap-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-gray-100 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-gray-500 tracking-wider uppercase">
+                    Standard Weather Forecast
+                  </h3>
+                  <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                    Freemium Tier
+                  </span>
+                </div>
+                <p className="text-gray-900 font-medium text-sm mt-0.5">Live Open-Meteo Satellite Data</p>
+              </div>
+              <span className="text-xs text-gray-400 font-bold">🔄 Daily Auto-Restocked</span>
             </div>
             
             {weather ? (
-              <div className="flex items-center gap-8">
-                <div className="flex flex-col items-center">
-                  <span className={`material-symbols-outlined text-[48px] ${weatherDetails.color}`}>
-                    {weatherDetails.icon}
-                  </span>
-                  <span className="text-sm font-bold text-gray-700 mt-1">{weatherDetails.text}</span>
-                </div>
-                
-                <div className="h-12 w-px bg-gray-200"></div>
-                
-                <div>
-                  <div className="text-4xl font-bold text-gray-900 tracking-tighter">
-                    {weather.temperature_2m}°<span className="text-2xl text-gray-400">C</span>
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-wrap items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <span className={`material-symbols-outlined text-[54px] ${weatherDetails.color}`}>
+                      {weatherDetails.icon}
+                    </span>
+                    <div>
+                      <span className="text-lg font-bold text-gray-800 block">{weatherDetails.text}</span>
+                      <span className="text-xs text-gray-500 font-medium">Current Plot Conditions</span>
+                    </div>
+                  </div>
+                  
+                  <div className="text-4xl font-black text-gray-900 tracking-tighter">
+                    {weather.temperature_2m}°<span className="text-2xl text-gray-400 font-bold">C</span>
+                  </div>
+
+                  <div className="flex items-center gap-6 text-sm text-gray-600 font-semibold bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-blue-500">water_drop</span>
+                      {weather.relative_humidity_2m}% Humidity
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-gray-500">air</span>
+                      {weather.wind_speed_10m} km/h Wind
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 ml-4">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 font-medium">
-                    <span className="material-symbols-outlined text-[16px] text-blue-400">water_drop</span>
-                    {weather.relative_humidity_2m}% Humidity
+                {/* 5-Day Standard Daily Forecast Strip */}
+                {dailyForecast && dailyForecast.time && (
+                  <div className="pt-4 border-t border-gray-100">
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                      5-Day Standard Daily Forecast
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                      {dailyForecast.time.slice(0, 5).map((dayTime, i) => {
+                        const dayName = new Date(dayTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                        const code = dailyForecast.weather_code[i];
+                        const dayWeather = getWeatherDescription(code);
+                        const maxT = dailyForecast.temperature_2m_max[i];
+                        const minT = dailyForecast.temperature_2m_min[i];
+                        const rain = dailyForecast.precipitation_sum[i];
+
+                        return (
+                          <div key={i} className="bg-gray-50 rounded-2xl p-3 border border-gray-100 flex flex-col items-center text-center">
+                            <span className="text-[11px] font-bold text-gray-600 mb-1">{i === 0 ? 'Today' : dayName}</span>
+                            <span className={`material-symbols-outlined text-2xl my-1 ${dayWeather.color}`}>
+                              {dayWeather.icon}
+                            </span>
+                            <span className="text-xs font-black text-gray-900 mt-1">{Math.round(maxT)}° / {Math.round(minT)}°</span>
+                            <span className="text-[10px] text-blue-600 font-semibold mt-1">
+                              {rain > 0 ? `${rain}mm rain` : 'Dry'}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600 font-medium">
-                    <span className="material-symbols-outlined text-[16px] text-gray-400">air</span>
-                    {weather.wind_speed_10m} km/h Wind
-                  </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="animate-pulse flex gap-4">
@@ -200,14 +249,27 @@ export default function FarmDetails() {
             )}
           </div>
 
-          {/* Live Soil Analytics Widget */}
+          {/* Live Soil Analytics Widget & Basic Soil Moisture Calculator Launcher */}
           <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 mt-[-1rem]">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="text-sm font-bold text-gray-500 tracking-wider uppercase mb-1">Soil Health Analytics</h3>
-                <p className="text-gray-900 font-medium">Real-time Open-Meteo Data (0-9cm Depth)</p>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-gray-500 tracking-wider uppercase">
+                    Soil Health & Moisture Analytics
+                  </h3>
+                  <span className="bg-teal-100 text-teal-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                    Basic Freemium Calculator
+                  </span>
+                </div>
+                <p className="text-gray-900 font-medium text-sm mt-0.5">Real-time Open-Meteo Data (0-9cm Depth)</p>
               </div>
-              <span className="material-symbols-outlined text-amber-600 bg-amber-50 p-2 rounded-xl">grass</span>
+              <button 
+                onClick={onOpenSoilCalc}
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow transition-colors flex items-center gap-1.5"
+              >
+                <span className="material-symbols-outlined text-sm">calculate</span>
+                Soil Moisture Tool
+              </button>
             </div>
             
             {weather && weather.soil_temperature_6cm !== undefined ? (
