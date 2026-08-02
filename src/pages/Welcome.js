@@ -63,10 +63,10 @@ export default function Welcome() {
         <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate('/admin-login')}
-            className="font-label-md text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-300 px-4 py-2 rounded-lg transition-all flex items-center gap-1"
+            className="font-label-md text-xs font-black text-gray-950 bg-amber-400 hover:bg-amber-300 border border-amber-500 px-4 py-2 rounded-lg transition-all shadow-sm flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">shield</span>
-            Owner Portal
+            👑 Owner Portal
           </button>
           <button 
             onClick={() => navigate('/login')}
@@ -112,15 +112,22 @@ export default function Welcome() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button 
                 onClick={() => navigate('/login')}
-                className="w-full sm:w-auto min-w-[200px] h-14 bg-primary text-white font-title-md text-title-md rounded-xl shadow-lg hover:shadow-primary/25 hover:brightness-110 transition-all active:scale-[0.98]"
+                className="w-full sm:w-auto min-w-[180px] h-14 bg-primary text-white font-title-md text-title-md rounded-xl shadow-lg hover:shadow-primary/25 hover:brightness-110 transition-all active:scale-[0.98]"
               >
                 Get Started
               </button>
               <button 
                 onClick={() => navigate('/login')}
-                className="w-full sm:w-auto min-w-[200px] h-14 bg-white/50 backdrop-blur-md border border-outline/30 text-on-surface font-title-md text-title-md rounded-xl hover:bg-white/80 transition-all active:scale-[0.98]"
+                className="w-full sm:w-auto min-w-[180px] h-14 bg-white/50 backdrop-blur-md border border-outline/30 text-on-surface font-title-md text-title-md rounded-xl hover:bg-white/80 transition-all active:scale-[0.98]"
               >
                 Log In
+              </button>
+              <button 
+                onClick={() => navigate('/admin-login')}
+                className="w-full sm:w-auto min-w-[200px] h-14 bg-amber-500 hover:bg-amber-400 text-gray-950 font-black text-title-md rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+              >
+                <span className="material-symbols-outlined text-xl">shield</span>
+                👑 Owner Admin Portal
               </button>
             </div>
           </div>
