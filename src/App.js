@@ -104,11 +104,14 @@ const AuthLayout = () => {
 
 const router = createBrowserRouter([
   {
+    path: "/admin-login",
+    element: <AdminLogin />,
+  },
+  {
     element: <AuthLayout />,
     children: [
       { path: "/welcome", element: <Welcome /> },
       { path: "/login", element: <Login /> },
-      { path: "/admin-login", element: <AdminLogin /> },
     ]
   },
   {
@@ -128,36 +131,30 @@ const router = createBrowserRouter([
 
 export default function App() {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
 
   useEffect(() => {
     // Check daily restock status on application launch
     dispatch(checkAndRestockDaily());
 
-    let isMounted = true;
+    // If user is logged in as Admin, skip Supabase public auth checks
+    if (user?.user_metadata?.role === 'admin') {
+      return;
+    }
 
-    // Fallback timeout guarantee: prevent infinite Loading spinner if Supabase network fetch fails
-    const timeoutId = setTimeout(() => {
-      if (isMounted) {
-        dispatch(clearAuth());
-      }
-    }, 1500);
+    let isMounted = true;
 
     // Initial fetch of session with error handling
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
-        clearTimeout(timeoutId);
         if (!isMounted) return;
         if (session) {
           dispatch(setAuth({ user: session.user, session }));
           dispatch(fetchLands());
-        } else {
-          dispatch(clearAuth());
         }
       })
       .catch((err) => {
         console.warn("Supabase auth session fetch warning:", err);
-        clearTimeout(timeoutId);
-        if (isMounted) dispatch(clearAuth());
       });
 
     // Listen for auth changes (login, logout)
@@ -166,17 +163,14 @@ export default function App() {
       if (session) {
         dispatch(setAuth({ user: session.user, session }));
         dispatch(fetchLands());
-      } else {
-        dispatch(clearAuth());
       }
     });
 
     return () => {
       isMounted = false;
-      clearTimeout(timeoutId);
       subscription.unsubscribe();
     };
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   return <RouterProvider router={router} />;
 }

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FARM_LAND_BG_IMAGE } from '../constants/utils';
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -89,8 +90,9 @@ export default function Welcome() {
           <div className="absolute inset-0 z-0">
             <img 
               className="w-full h-full object-cover" 
-              alt="High-resolution cinematic wide shot of lush green agricultural fields during a crisp, clear morning. The view shows expansive, perfectly aligned crop rows with advanced precision farming equipment or drones visible in the distance." 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBsuUIH9STVW03xbts_T5ZrBzaKmiCdj_CtLUbUNajHIU_-GI4MhInfWqmGp6I5MTAFeEwOD9_bhQnyLprnobDMsQZt-69WYKeVVzQ0pxaghYOaa7l-Mdq-xH0Qq3IuMOQcVz8JzNYSll5F_E61JZv__6hDB_QiPuyyc7kTrIpYKWUCl9_miqJAsv4ERmwwLpXWQQlPTOiS6uCsVOCGyzOEJ8ylcUTz-wxJI0r7TsmumVRI6L1RGM4"
+              alt="High-resolution cinematic wide shot of lush green agricultural fields" 
+              src={FARM_LAND_BG_IMAGE}
+              loading="eager"
             />
             <div className="absolute inset-0 hero-gradient-overlay"></div>
           </div>
