@@ -141,18 +141,36 @@ export default function App() {
     // Check daily restock status on application launch
     dispatch(checkAndRestockDaily());
 
-    // Initial fetch of session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        dispatch(setAuth({ user: session.user, session }));
-        dispatch(fetchLands());
-      } else {
+    let isMounted = true;
+
+    // Fallback timeout guarantee: prevent infinite Loading spinner if Supabase network fetch fails
+    const timeoutId = setTimeout(() => {
+      if (isMounted) {
         dispatch(clearAuth());
       }
-    });
+    }, 1500);
+
+    // Initial fetch of session with error handling
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        clearTimeout(timeoutId);
+        if (!isMounted) return;
+        if (session) {
+          dispatch(setAuth({ user: session.user, session }));
+          dispatch(fetchLands());
+        } else {
+          dispatch(clearAuth());
+        }
+      })
+      .catch((err) => {
+        console.warn("Supabase auth session fetch warning:", err);
+        clearTimeout(timeoutId);
+        if (isMounted) dispatch(clearAuth());
+      });
 
     // Listen for auth changes (login, logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
       if (session) {
         dispatch(setAuth({ user: session.user, session }));
         dispatch(fetchLands());
@@ -161,7 +179,11 @@ export default function App() {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+      subscription.unsubscribe();
+    };
   }, [dispatch]);
 
   return <RouterProvider router={router} />;
