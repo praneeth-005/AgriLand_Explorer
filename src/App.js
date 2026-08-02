@@ -20,15 +20,11 @@ import TierStatusModal from './components/TierStatusModal';
 import FieldLimitModal from './components/FieldLimitModal';
 
 const DashboardLayout = () => {
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [isSoilCalcOpen, setIsSoilCalcOpen] = useState(false);
   const [isTierModalOpen, setIsTierModalOpen] = useState(false);
   const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
-
-  if (loading) {
-    return <div className="w-full h-screen flex items-center justify-center bg-[#f3f4f6]">Loading...</div>;
-  }
 
   if (!user) {
     return <Navigate to="/welcome" replace />;
@@ -93,11 +89,7 @@ const FarmDetailsWrapper = () => {
 };
 
 const AuthLayout = () => {
-  const { user, loading } = useSelector((state) => state.auth);
-
-  if (loading) {
-    return <div className="w-full h-screen flex items-center justify-center bg-white">Loading...</div>;
-  }
+  const { user } = useSelector((state) => state.auth);
 
   if (user) {
     return <Navigate to="/explorer" replace />;
