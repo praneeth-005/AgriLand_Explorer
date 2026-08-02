@@ -162,14 +162,25 @@ export default function Login() {
                </button>
             </form>
 
-            <div className="mt-8 text-center">
-              <button 
-                onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(''); }}
-                className="text-[#006e2f] font-bold hover:underline"
-              >
-                {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-              </button>
-            </div>
+             <div className="mt-8 text-center space-y-3">
+               <button 
+                 onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(''); }}
+                 className="text-[#006e2f] font-bold hover:underline block w-full text-sm"
+               >
+                 {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+               </button>
+
+               <div className="pt-4 border-t border-gray-100 flex items-center justify-center gap-2">
+                 <span className="text-xs text-gray-400 font-medium">Application Owner?</span>
+                 <button 
+                   onClick={() => navigate('/admin-login')}
+                   className="text-xs font-black text-amber-600 hover:text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200 transition-colors flex items-center gap-1"
+                 >
+                   <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
+                   Owner Portal Sign-In
+                 </button>
+               </div>
+             </div>
          </div>
       </div>
     </div>

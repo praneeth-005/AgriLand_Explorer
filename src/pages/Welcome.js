@@ -59,16 +59,23 @@ export default function Welcome() {
           <a className="font-label-md text-label-md text-on-surface-variant transition-colors hover:text-primary" href="#">About</a>
           <a className="font-label-md text-label-md text-on-surface-variant transition-colors hover:text-primary" href="#">Contact</a>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => navigate('/admin-login')}
+            className="font-label-md text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-300 px-4 py-2 rounded-lg transition-all flex items-center gap-1"
+          >
+            <span className="material-symbols-outlined text-sm">shield</span>
+            Owner Portal
+          </button>
           <button 
             onClick={() => navigate('/login')}
-            className="font-label-md text-label-md text-primary px-6 py-2 rounded-lg border border-primary hover:bg-primary/5 transition-all active:scale-95"
+            className="font-label-md text-label-md text-primary px-5 py-2 rounded-lg border border-primary hover:bg-primary/5 transition-all active:scale-95"
           >
             Log In
           </button>
           <button 
             onClick={() => navigate('/login')}
-            className="font-label-md text-label-md bg-primary-container text-on-primary-container px-6 py-2.5 rounded-lg font-semibold shadow-md hover:brightness-105 transition-all active:scale-95"
+            className="font-label-md text-label-md bg-primary-container text-on-primary-container px-5 py-2.5 rounded-lg font-semibold shadow-md hover:brightness-105 transition-all active:scale-95"
           >
             Get Started
           </button>

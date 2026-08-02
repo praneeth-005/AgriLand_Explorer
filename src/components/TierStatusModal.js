@@ -147,15 +147,25 @@ export default function TierStatusModal({ isOpen, onClose, onOpenSoilCalc }) {
 
           </div>
 
-          {/* Mode Switcher for Testing */}
-          <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
-            <span className="text-xs font-bold text-gray-500">Plan Tester Toggle:</span>
-            <button 
-              onClick={() => dispatch(setTier(tier === 'free' ? 'pro' : 'free'))}
-              className="text-xs font-bold text-gray-700 hover:text-green-800 bg-gray-100 px-3 py-1.5 rounded-xl border border-gray-200"
-            >
-              Switch to {tier === 'free' ? 'Pro Plan (Unlimited)' : 'Free Plan'}
-            </button>
+          {/* Owner / Admin Testing Mode Switcher */}
+          <div className="pt-4 border-t border-gray-100 space-y-3">
+            <div className="flex justify-between items-center bg-gray-50 p-3.5 rounded-2xl border border-gray-200">
+              <div>
+                <span className="text-xs font-black text-gray-900 block">👑 Application Owner Control</span>
+                <span className="text-[11px] text-gray-500 font-medium">Bypass all limits & test premium features anytime</span>
+              </div>
+              <button 
+                onClick={() => dispatch(setTier(tier === 'free' ? 'pro' : 'free'))}
+                className={`text-xs font-black px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 ${
+                  tier === 'pro' 
+                    ? 'bg-amber-500 hover:bg-amber-600 text-white' 
+                    : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                }`}
+              >
+                <span className="material-symbols-outlined text-sm">{tier === 'pro' ? 'key' : 'workspace_premium'}</span>
+                {tier === 'free' ? 'Switch to Owner Pro Mode' : 'Switch to Freemium View'}
+              </button>
+            </div>
           </div>
 
         </div>

@@ -12,6 +12,7 @@ import NavigationRoute from './pages/NavigationRoute';
 import FarmDetails from './pages/FarmDetails';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
+import AdminLogin from './pages/AdminLogin';
 import Sidebar from './components/Sidebar';
 import AgriAIChatbot from './components/AgriAIChatbot';
 import SoilMoistureCalculator from './components/SoilMoistureCalculator';
@@ -115,6 +116,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/welcome", element: <Welcome /> },
       { path: "/login", element: <Login /> },
+      { path: "/admin-login", element: <AdminLogin /> },
     ]
   },
   {
