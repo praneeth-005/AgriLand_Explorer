@@ -231,10 +231,11 @@ export default function Welcome() {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button 
-                onClick={() => navigate('/login')}
-                className="px-10 py-5 bg-primary text-white rounded-2xl font-title-md text-title-md shadow-xl hover:shadow-primary/30 transition-all"
+                onClick={() => navigate('/admin-login')}
+                className="px-10 py-5 bg-primary text-white rounded-2xl font-title-md text-title-md shadow-xl hover:shadow-primary/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                Request a Demo
+                <span className="material-symbols-outlined text-[22px]">admin_panel_settings</span>
+                Admin Portal Access
               </button>
               <button 
                 className="px-10 py-5 border-2 border-outline/20 hover:bg-surface-container transition-all rounded-2xl font-title-md text-title-md"
