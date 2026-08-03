@@ -1,17 +1,14 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "parcel build index.html --public-url / --dist-dir dist --no-cache",
   "outputDirectory": "dist",
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate, s-maxage=0, no-cache, no-store"
-        },
-        {
-          "key": "Clear-Site-Data",
-          "value": "\"cache\""
+          "value": "no-cache, no-store, must-revalidate, max-age=0"
         },
         {
           "key": "Pragma",
