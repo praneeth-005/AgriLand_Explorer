@@ -105,14 +105,15 @@ export default function Welcome() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button 
-                onClick={() => navigate('/login')}
-                className="w-full sm:w-auto min-w-[200px] h-14 bg-primary text-white font-title-md text-title-md rounded-xl shadow-lg hover:shadow-primary/25 hover:brightness-110 transition-all active:scale-[0.98]"
+                onClick={() => navigate('/admin-login')}
+                className="w-full sm:w-auto min-w-[220px] h-14 bg-primary text-on-primary-container font-extrabold text-title-md rounded-xl shadow-lg hover:shadow-primary/25 hover:brightness-110 transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
               >
-                Get Started
+                <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+                Admin Login
               </button>
               <button 
                 onClick={() => navigate('/login')}
-                className="w-full sm:w-auto min-w-[200px] h-14 bg-white/50 backdrop-blur-md border border-outline/30 text-on-surface font-title-md text-title-md rounded-xl hover:bg-white/80 transition-all active:scale-[0.98]"
+                className="w-full sm:w-auto min-w-[200px] h-14 bg-white/50 backdrop-blur-md border border-outline/30 text-on-surface font-title-md text-title-md rounded-xl hover:bg-white/80 transition-all active:scale-[0.98] cursor-pointer"
               >
                 Log In
               </button>
