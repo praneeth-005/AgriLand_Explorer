@@ -103,28 +103,19 @@ const AuthLayout = () => {
 };
 
 const router = createBrowserRouter([
+  { path: "/", element: <Welcome /> },
+  { path: "/welcome", element: <Welcome /> },
+  { path: "/admin-login", element: <AdminLogin /> },
+  { path: "/login", element: <Login /> },
   {
-    path: "/admin-login",
-    element: <AdminLogin />,
-  },
-  {
-    element: <AuthLayout />,
-    children: [
-      { path: "/welcome", element: <Welcome /> },
-      { path: "/login", element: <Login /> },
-    ]
-  },
-  {
-    path: "/",
     element: <DashboardLayout />,
     errorElement: <Navigate to="/welcome" replace />,
     children: [
-      { path: "/", element: <Navigate to="/explorer" replace /> },
       { path: "explorer", element: <MapExplorerWrapper /> },
       { path: "lands", element: <MyLandsWrapper /> },
       { path: "route", element: <NavigationRoute /> },
       { path: "land/:id", element: <FarmDetailsWrapper /> },
-      { path: "*", element: <Navigate to="/explorer" replace /> },
+      { path: "*", element: <Navigate to="/welcome" replace /> },
     ],
   },
 ]);

@@ -62,23 +62,17 @@ export default function Welcome() {
         </div>
         <div className="flex items-center gap-3">
           <button 
-            onClick={() => navigate('/admin-login')}
-            className="font-label-md text-xs font-bold text-gray-800 bg-gray-100 hover:bg-gray-200 border border-gray-300 px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 active:scale-95"
-          >
-            <span className="material-symbols-outlined text-[16px] text-amber-600">admin_panel_settings</span>
-            Admin
-          </button>
-          <button 
             onClick={() => navigate('/login')}
-            className="font-label-md text-label-md text-primary px-5 py-2 rounded-lg border border-primary hover:bg-primary/5 transition-all active:scale-95"
+            className="font-label-md text-label-md text-primary px-6 py-2.5 rounded-lg border border-primary hover:bg-primary/5 transition-all active:scale-95 font-semibold"
           >
             Log In
           </button>
           <button 
-            onClick={() => navigate('/login')}
-            className="font-label-md text-label-md bg-primary-container text-on-primary-container px-5 py-2.5 rounded-lg font-semibold shadow-md hover:brightness-105 transition-all active:scale-95"
+            onClick={() => navigate('/admin-login')}
+            className="font-label-md text-label-md bg-primary-container text-on-primary-container px-6 py-2.5 rounded-lg font-bold shadow-md hover:brightness-105 transition-all active:scale-95 flex items-center gap-1.5"
           >
-            Get Started
+            <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+            Admin Login
           </button>
         </div>
       </nav>
