@@ -3,7 +3,6 @@ node_modules/
 
 # parcel cache and build output
 .parcel-cache/
-build/
 
 # environment variables
 .env
