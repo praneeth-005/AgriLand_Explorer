@@ -10,6 +10,10 @@
           "value": "public, max-age=0, must-revalidate, s-maxage=0, no-cache, no-store"
         },
         {
+          "key": "Clear-Site-Data",
+          "value": "\"cache\""
+        },
+        {
           "key": "Pragma",
           "value": "no-cache"
         },
