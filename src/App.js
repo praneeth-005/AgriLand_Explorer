@@ -103,7 +103,7 @@ const AuthLayout = () => {
 };
 
 const router = createBrowserRouter([
-  { path: "/", element: <Welcome /> },
+  { path: "/", element: <Navigate to="/welcome" replace /> },
   { path: "/welcome", element: <Welcome /> },
   { path: "/admin-login", element: <AdminLogin /> },
   { path: "/login", element: <Login /> },
