@@ -1,3 +1,4 @@
+// Vercel Fresh Build Trigger 2026-08-03
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FARM_LAND_BG_IMAGE } from '../constants/utils';
