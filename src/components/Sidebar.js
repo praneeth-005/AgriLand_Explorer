@@ -15,10 +15,14 @@ export default function Sidebar({ onOpenTierModal, onOpenSoilCalc }) {
   };
 
   const handleLogout = async () => {
-    if (window.confirm("Are you sure you want to log out?")) {
+    try {
       await supabase.auth.signOut();
-      dispatch(clearAuth());
+    } catch (e) {
+      console.warn("Sign out warning:", e);
     }
+    localStorage.removeItem('agri_auth_user');
+    dispatch(clearAuth());
+    window.location.href = '/welcome';
   };
 
   return (
@@ -43,9 +47,9 @@ export default function Sidebar({ onOpenTierModal, onOpenSoilCalc }) {
           <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>water_drop</span>
           <span className="text-[10px] mt-1">Moisture</span>
         </div>
-        <div onClick={onOpenTierModal} className="flex flex-col items-center p-2 text-gray-500 font-medium cursor-pointer">
-          <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>workspace_premium</span>
-          <span className="text-[10px] mt-1">Quota</span>
+        <div onClick={handleLogout} className="flex flex-col items-center p-2 text-red-600 font-medium cursor-pointer">
+          <span className="material-symbols-outlined" style={{ fontSize: '26px' }}>logout</span>
+          <span className="text-[10px] mt-1">Logout</span>
         </div>
       </aside>
 
@@ -111,10 +115,13 @@ export default function Sidebar({ onOpenTierModal, onOpenSoilCalc }) {
               Add New Plot
             </NavLink>
 
-            <div onClick={() => showToast('Help Center available')} className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors">
-              <span className="material-symbols-outlined">help</span>
-              <span className="text-sm font-medium">Help</span>
-            </div>
+            <button 
+              onClick={handleLogout} 
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors font-bold text-sm"
+            >
+              <span className="material-symbols-outlined">logout</span>
+              Log Out
+            </button>
           </div>
 
         </div>
